@@ -12,7 +12,8 @@ Data comes from the Taiwan Economic Journal including period of 1999–2009.
 https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 
 ## Task
-To build the best possible classifier whether it's a random forest, svm or a neural network
+* To build a preprocessing pipeline, that will overcome the challenges with the data
+* Find an appropriate classifier (ML models with different setups of hyperparameters) for bankruptcy prediction
 
 ## Challenges
 * Low data quality (irrelevant data in some columns, highly correlated columns)

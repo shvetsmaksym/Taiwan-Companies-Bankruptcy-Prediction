@@ -1,15 +1,19 @@
-# Taiwan Companies Bankruptcy
+# Bankruptcy Prediction
 
 ## Data
-The dataset includes some selected financial indicators of Taiwan Companies (independent variables) as well as the information
-if company went bankrupt or not (dependent variable). The data comes from the Taiwan Economic Journal for the period 
-of 1999–2009, and it's available on Kaggle:
+The dataset consists of:
+* independent variables: financial indicators (~95) for selected Taiwan Companies (~6800)
+* label: information whether company went bankrupt or not.
 
+## Source
+Data comes from the Taiwan Economic Journal including period of 1999–2009.
+
+## Kaggle:
 https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 
 ## Task
 To build the best possible classifier whether it's a random forest, svm or a neural network
 
 ## Challenges
-* Low quality of data (some indicators represent single absolute value whether the relation of two absolute values is expected)
-* Unbalanced classes (1/30 = bankrupt/non-bankrupt)
+* Low data quality (irrelevant data in some columns, highly correlated columns)
+* Unbalanced data (classes distribution is ~1/30)

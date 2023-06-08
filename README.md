@@ -18,3 +18,17 @@ https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 ## Challenges
 * Low data quality (irrelevant data in some columns, highly correlated columns)
 * Unbalanced data (classes distribution is ~1/30)
+
+## Progress
+1. Data preprocessing
+2. Oversampling
+
+![img](./train_test_split.png)
+3. ML
+
+3.1. Random Forrest
+
+3.1.1 Test hyperparameters setups:
+[link to visualizations](models/random-forrest-hyperparameters-dependencies.html)
+
+...

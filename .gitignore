@@ -1,2 +1,4 @@
 data.csv
 *.bkp
+__pycache__
+.idea

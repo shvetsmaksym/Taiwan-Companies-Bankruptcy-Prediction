@@ -1,4 +1,5 @@
-data.csv
+data/data.csv
 *.bkp
 __pycache__
 .idea
+data/.locals/

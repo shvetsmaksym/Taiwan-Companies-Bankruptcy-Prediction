@@ -53,14 +53,47 @@ def arr2d_to_cubes(arr: np.array, cube_len=10) -> np.array:
 
 
 def pd_to_cubes(df: pd.DataFrame, cube_len=10) -> List[pd.DataFrame]:
+    """
+    :param df: initial DataFrame
+    :param cube_len: side length of cubes
+    :return: list of cubes of shape (cube_len x cube_len
+    """
     new_dim = np.array(df.shape) // cube_len
-    new_size = (new_dim[0] ** 2) * (cube_len ** 2)
-    # new_dim += 1 if new_size < df.size else 0
     df_queue = list()
     for x, y in list(product(range(new_dim[0]), range(new_dim[1]))):
         df_queue.append(df.iloc[x*cube_len:(x+1)*cube_len, y*cube_len:(y+1)*cube_len])
 
     return df_queue
+
+
+def clean_dataset(df: pd.DataFrame, t: int, label_col: str = 'bankrupt', return_df: bool = False):
+    """
+    :param df: initial DataFrame
+    :param label_col: dependent column to exclude from filtering
+    :param t: number of instances allowed to be irrelevant per particular column
+    :param return_df:
+    :return: filtered DataFrame if return_df=True. Otherwise, return (info_keep, bankrupt ratio),
+    where info_keep is retained % of cells from df.
+    """
+    info_init = df.shape[0] * df.shape[1]
+    df_new = df.copy()
+
+    # remove columns with significant number of irrelevant values
+    cols_to_remove = df_new.columns[(df_new > 1).sum(axis=0) >= t]
+    df_new = df_new.drop(columns=list(cols_to_remove))
+
+    # remove rows with irrelevant values left
+    df_new = df_new[~(df_new > 1).any(axis=1)]
+
+    info_keep = (df_new.shape[0] * df_new.shape[1]) / info_init
+
+    num_yes = len(df_new[df_new[label_col] == 1])
+    num_no = len(df_new[df_new[label_col] == 0])
+
+    if return_df:
+        return df_new
+    else:
+        return info_keep, num_yes / (num_yes + num_no)
 
 
 if __name__ == "__main__":

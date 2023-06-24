@@ -29,6 +29,6 @@ https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 3.1. Random Forrest
 
 3.1.1 Test hyperparameters setups:
-[link to visualizations](models/random-forrest-hyperparameters-dependencies.html)
+[link to visualizations](data/hyperparameter_test_results/random-forest-hyperparameters-dependencies.html)
 
 ...

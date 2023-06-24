@@ -93,6 +93,10 @@ def filter_dataset(df: pd.DataFrame, t: int, label_col: str = 'bankrupt', return
         return info_keep, bankruptcy_ratio
 
 
+def dtypes_fixer(d: dict):
+    return {k: (int(v) if not v % 1 else v) for k, v in d.items()}
+
+
 if __name__ == "__main__":
     df = pd.DataFrame(np.random.random((80, 80)))
     cubes = pd_to_cubes(df)

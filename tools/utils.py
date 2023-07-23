@@ -8,13 +8,13 @@ import pandas as pd
 from typing import List
 
 
-def timefn(fn):
+def timer(fn):
     @wraps(fn)
     def measure_time(*args, **kwargs):
         t1 = time()
         result = fn(*args, **kwargs)
         t2 = time()
-        print("@timefn:" + fn.__str__() + " took " + str(t2 - t1) + " seconds")
+        print("@timer:" + fn.__str__() + " exec. time: " + str(round(t2 - t1, 2)) + " s.")
         return result
     return measure_time
 
@@ -106,9 +106,11 @@ def filter_dataset(df: pd.DataFrame, t: int, label_col: str = 'bankrupt', return
         return info_keep, bankruptcy_ratio
 
 
-@timefn
-def dtypes_fixer(d: dict):
-    return {k: (int(v) if not v % 1 else v) for k, v in d.items()}
+def dtypes_fixer(x):
+    if type(x) == dict:
+        return {k: (int(v) if not v % 1 else v) for k, v in x.items()}
+    if type(x) == list:
+        return [int(v) if not v % 1 else v for v in x]
 
 
 if __name__ == "__main__":

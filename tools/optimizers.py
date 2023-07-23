@@ -1,6 +1,6 @@
 import os
-import re
 import csv
+import time
 from itertools import product
 
 import pandas as pd
@@ -10,14 +10,10 @@ from typing import Sequence, Union, Annotated, Literal
 from multiprocessing import Manager, Pool, cpu_count
 from tqdm import tqdm
 
-from tools.utils import dtypes_fixer
+from tools.utils import dtypes_fixer, timefn
 
 ALLOWED_CLASSIFIERS = Union[RandomForestClassifier, AdaBoostClassifier]
 
-
-# def __int__(self, data: Annotated[Sequence[np.ndarray], 4],
-#             classifier: ALLOWED_CLASSIFIERS,
-#             hyperparameter_setups: Union[dict, pd.DataFrame]):
 
 class Optimizer:
     """
@@ -34,17 +30,18 @@ class Optimizer:
         self.header = list(self.setups.columns) + list(SetupEvaluator().metrics.keys())
 
     @staticmethod
+    @timefn
     def __unpack_params(p: dict) -> pd.DataFrame:
         d_ = list(product(*p.values()))
         return pd.DataFrame(data=d_, columns=list(p.keys()))
 
     def run_all_setups(self, processes: bool = False):
-
         if not processes:
             for stp in tqdm(self.setups.iterrows(), desc="training models..."):
                 r = self.run_single_setup(setup=stp[1], out_type='Series')
                 self.history = pd.concat([self.history, r], axis=1)
             self.history.to_csv(self.filepath, sep=';')
+            print(f"Results writen into {self.filepath}.")
         else:
             handler = ProcessHandler()
 
@@ -57,14 +54,18 @@ class Optimizer:
         :param out_type:
         :return:
         """
-
         recovered_dtypes = dtypes_fixer(setup.to_dict())
         self.clf.__dict__.update(recovered_dtypes)
+        t1 = time.time()
         self.clf.fit(self.x_train, self.y_train)
+        t2 = time.time()
+        print(round(t2 - t1, 2))
         setup_evaluator = SetupEvaluator(model=self.clf, **recovered_dtypes)
         setup_evaluator.evaluate(self.x_test, self.y_test)
+
         return setup_evaluator.astype(t=out_type)
 
+    @timefn
     def __optimize_dtypes(self):
         self.x_train, self.x_test = self.x_train.astype(np.float32), self.x_test.astype(np.float32)
         self.y_train, self.y_test = self.x_train.astype(np.uint8), self.x_test.astype(np.uint8)
@@ -95,7 +96,7 @@ class SetupEvaluator:
                         'f1 (class 0)': self.f1_class_0,
                         'f1 (class 1)': self.f1_class_1,
                         'f-Beta': self.f_beta}
-
+    @timefn
     def evaluate(self, x, y_true):
         y_predicted = self.model.predict(x)
         # y_proba = model.predict_proba(x)
@@ -205,6 +206,7 @@ class ProcessHandler:
 
 
 if __name__ == "__main__":
+    t1 = time.time()
     params = {'n_estimators': list(np.arange(8, 25, 8)),
               'max_depth': list(np.arange(8, 25, 8)),
               'min_samples_split': list(np.power(2, np.arange(3, 1, -1)).astype(np.uint16)),
@@ -217,9 +219,13 @@ if __name__ == "__main__":
              ]
 
     opt = Optimizer(data=data_, clf=RandomForestClassifier(), params=params)
-    opt.run_all_setups(processes=True)
+    opt.run_all_setups(processes=False)
     opt = opt.history
+    t2 = time.time()
 
-    # df = pd.read_csv('data/.local/RF.csv', sep=';')
-    print("Done.")
+    df = pd.read_csv('data/.local/RF.csv', sep=';')
+    df.to_csv()
+    with open('timings.txt', 'a', newline='\n') as f:
+        f.write(f"processes=False, {len(list(product(*params.values())))} setups: " + str(round(t2 - t1, 2)))
+    print('done.')
 

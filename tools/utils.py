@@ -1,9 +1,22 @@
 import re
 import numpy as np
 from itertools import combinations, product
+from functools import wraps
+from time import time
 
 import pandas as pd
 from typing import List
+
+
+def timefn(fn):
+    @wraps(fn)
+    def measure_time(*args, **kwargs):
+        t1 = time()
+        result = fn(*args, **kwargs)
+        t2 = time()
+        print("@timefn:" + fn.__str__() + " took " + str(t2 - t1) + " seconds")
+        return result
+    return measure_time
 
 
 def str_to_readable_title(text: str, max_lines: int = 3) -> str:
@@ -93,6 +106,7 @@ def filter_dataset(df: pd.DataFrame, t: int, label_col: str = 'bankrupt', return
         return info_keep, bankruptcy_ratio
 
 
+@timefn
 def dtypes_fixer(d: dict):
     return {k: (int(v) if not v % 1 else v) for k, v in d.items()}
 

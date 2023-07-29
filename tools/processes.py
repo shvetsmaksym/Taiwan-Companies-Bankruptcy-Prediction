@@ -17,7 +17,7 @@ class ProcessHandler:
             job = pool.apply_async(cls.worker, (queue, func, ps))
             jobs.append(job)
 
-        for job in tqdm(jobs, desc="training models..."):
+        for job in tqdm(jobs, desc="Multiprocessing method"):
             job.get()
 
         # now we are done, kill the listener
@@ -45,8 +45,8 @@ class ProcessHandler:
 
     @classmethod
     def worker(cls, q, func, setup):
-        res = func(setup, return_list=True)
-        res = ';'.join(list(map(lambda x: str(x), res)))
-        q.put(res)
+        res = func(setup)
+        augmented_result = ';'.join(list(map(lambda x: str(x), list(setup.values()) + list(res.values))))
+        q.put(augmented_result)
 
 

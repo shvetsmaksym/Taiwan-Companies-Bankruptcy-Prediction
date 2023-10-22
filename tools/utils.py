@@ -107,10 +107,11 @@ def filter_dataset(df: pd.DataFrame, t: int, label_col: str = 'bankrupt', return
 
 
 def dtypes_fixer(x):
-    if type(x) == dict:
+    if isinstance(x, dict):
         return {k: (int(v) if not v % 1 else v) for k, v in x.items()}
-    if type(x) == list:
+    if isinstance(x, list):
         return [int(v) if not v % 1 else v for v in x]
+
 
 
 if __name__ == "__main__":

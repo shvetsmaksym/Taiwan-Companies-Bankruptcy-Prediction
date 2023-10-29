@@ -37,7 +37,7 @@ def train_clf(ps):
     clf = BASE_CLF(**ps)
     clf.fit(X_TRAIN, Y_TRAIN)
     y_hat = clf.predict(X_TEST)
-    report = classification_report(Y_TEST, y_hat, output_dict=True, zero_division=np.nan)
+    report = classification_report(Y_TEST, y_hat, output_dict=True, zero_division=0)
     series = report_to_series(rp=report)
     return series
 
@@ -74,7 +74,7 @@ def run_inference(data: Tuple[np.ndarray],
     global HYPERPARAMETERS
     global OUTFILE
 
-    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = list(*data)
+    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = data
     METRICS = metrics
     CLASSES = [str(c) for c in classes]
     METRIC_NAMES = tuple(map(lambda x: '_'.join(list(x)), tuple(product(METRICS, CLASSES))))
@@ -97,12 +97,15 @@ def generate_hprs_report(df: pd.DataFrame, hprs: list, metrics=None):
     if metrics is None:
         metrics = ['f1-score_1']
 
+    hprs4cor = np.array(hprs)[df[hprs].dtypes.isin(['int', 'float']).values]
+    hprs4cor = hprs4cor.tolist()
+
     print("\n\tCorrelation between given metrics and hyperparameters")
     for metric in metrics:
         print(f"\n\t---{metric}---\n")
 
         m_q50 = df[metric].quantile(0.5)
-        r_ = pd.DataFrame(df[df[metric] >= m_q50][hprs + [metric]].corr()[metric])
+        r_ = pd.DataFrame(df[df[metric] >= m_q50][hprs4cor + [metric]].corr()[metric])
         r_ = r_.drop(metric)
         print(r_)
 
@@ -111,7 +114,7 @@ def generate_hprs_report(df: pd.DataFrame, hprs: list, metrics=None):
         print(f"\n\t---{metric}---\n")
 
         m_q99 = df[metric].quantile(0.99)
-        r_ = pd.DataFrame(df[df[metric] >= m_q99][hprs + [metric]])
+        r_ = pd.DataFrame(df[df[metric] >= m_q99][hprs + [metric]]).sort_values(by=metric, ascending=False)
         print(r_.head())
 
 

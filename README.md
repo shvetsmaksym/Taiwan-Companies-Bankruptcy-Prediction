@@ -25,6 +25,7 @@ https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 2. Data preprocessing (data cleaning, remove correlated columns, oversampling)
 
 ![img](./train_test_split.png)
+
 3. ML
 
 Find optimal hyperparameters for:<br>

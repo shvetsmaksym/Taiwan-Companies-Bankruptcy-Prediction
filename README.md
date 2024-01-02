@@ -6,9 +6,9 @@ The dataset consists of:
 * label: information whether company went bankrupt or not.
 
 ## Source
-Taiwanese Bankruptcy Prediction
-https://doi.org/10.24432/C5004D
-Taiwan Economic Journal 2020
+Taiwanese Bankruptcy Prediction<br>
+https://doi.org/10.24432/C5004D<br>
+Taiwan Economic Journal 2020<br>
 
 ## Kaggle:
 https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
@@ -27,10 +27,10 @@ https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 ![img](./train_test_split.png)
 3. ML
 
-Find optimal hyperparameters for:
+Find optimal hyperparameters for:<br>
 
-3.1. Random Forrest
-3.2. XGBoost
-3.3. LightGBM
+3.1. Random Forrest <br>
+3.2. XGBoost<br>
+3.3. LightGBM<br>
 
 4. Summary

@@ -12,23 +12,23 @@ Data comes from the Taiwan Economic Journal including period of 1999–2009.
 https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
 
 ## Task
-* To build a preprocessing pipeline, that will overcome the challenges with the data
-* Find an appropriate classifier (ML models with different setups of hyperparameters) for bankruptcy prediction
+* Build an optimal classifier for bankruptcy prediction.
 
 ## Challenges
 * Low data quality (irrelevant data in some columns, highly correlated columns)
 * Unbalanced data (classes distribution is ~1/30)
 
-## Progress
-1. Data preprocessing
-2. Oversampling
+## Pipeline
+1. Data exploration
+2. Data preprocessing (data cleaning, remove correlated columns, oversampling)
 
 ![img](./train_test_split.png)
 3. ML
 
+Find optimal hyperparameters for:
+
 3.1. Random Forrest
+3.2. XGBoost
+3.3. LightGBM
 
-3.1.1 Test hyperparameters setups:
-[link to visualizations](data/hyperparameter_test_results/random-forest-hyperparameters-dependencies.html)
-
-...
+4. Summary

@@ -2,11 +2,13 @@
 
 ## Data
 The dataset consists of:
-* independent variables: financial indicators (~95) for selected Taiwan Companies (~6800)
+* independent variables: 95 financial indicators  for selected Taiwan Companies (~6800)
 * label: information whether company went bankrupt or not.
 
 ## Source
-Data comes from the Taiwan Economic Journal including period of 1999–2009.
+Taiwanese Bankruptcy Prediction
+https://doi.org/10.24432/C5004D
+Taiwan Economic Journal 2020
 
 ## Kaggle:
 https://www.kaggle.com/datasets/fedesoriano/company-bankruptcy-prediction
